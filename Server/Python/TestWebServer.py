@@ -5,6 +5,7 @@
 # 用 bottle 建立一个非常简单的本地测试 Web 服务器
 
 from bottle import route,run,template
+from TestDatasets import *
 import json
 
 # 测试bottle web server 是否正常运行
@@ -28,18 +29,8 @@ def index(id):
 # 获取本周课表
 @route('/schedule/thisweek')
 def index():
-	courses = []
-	for i in range(5):
-		title = 'title%d'%(i)
-		teacher_id = '1010'
-		teacher_name = 'sample'
-		campus = 'jlh'
-		room = '302'
-		date = 'xq1'
-		time = '1-2'
-		course= {'id':i,'title':title,'teacher_id':teacher_id,'teacher_name':teacher_name,'campus':campus,'room':room,'date':date,'time':time}
-		courses.append(course)
-	return json.dumps(courses)
+	tds = TestDatasets()
+	return json.dumps(tds.GetSchedules())
 
 # 上传评价
 @route('/evaluate/:id/:score/:msg')
