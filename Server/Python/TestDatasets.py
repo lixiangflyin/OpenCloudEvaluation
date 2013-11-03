@@ -2,8 +2,8 @@
 #coding=utf-8
 
 import sys
-print sys.getdefaultencoding()
-#sys.setdefaultencoding('utf-8')
+reload(sys) 
+sys.setdefaultencoding('utf8')
 import random
 
 class TestDatasets:
@@ -32,10 +32,12 @@ class TestDatasets:
 			id = '101010%d' % i
 			title = self._courses_[i]
 			teacher = self._teachers_[i]
+			if isinstance(teacher,unicode):
+				print teacher
 			room = self._rooms_[i]
 			date = self._date_[i]
 			time = self._time_[i]
-			schedules.append("{'id':'%s','title':'%s','teacher_id':'11111','teacher_name':'%s','room':'%s','date':'%s','time':'%s'"%(id,title,teacher,room,date,time))
+			schedules.append({'id':id,'title':title,'teacher_id':'1111','teacher_name':teacher,'room':room,'date':date,'time':time})
 		return schedules
 		pass
 

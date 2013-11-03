@@ -30,7 +30,7 @@ def index(id):
 @route('/schedule/thisweek')
 def index():
 	tds = TestDatasets()
-	return json.dumps(tds.GetSchedules())
+	return json.dumps(tds.GetSchedules(),ensure_ascii=False)
 
 # 上传评价
 @route('/evaluate/:id/:score/:msg')
