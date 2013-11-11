@@ -36,5 +36,6 @@ def index():
 @route('/evaluate/:id/:score/:msg')
 def index(id,score,msg=''):
 	return template('<ul><li>{{id}}</li><li>{{score}}</li><li>{{msg}}</li>',id=id,score=score,msg=msg)
-
-run(host='localhost',port=8080)
+        
+#run(host='localhost',port=8080)
+run(host='223.3.98.209',port=8080)

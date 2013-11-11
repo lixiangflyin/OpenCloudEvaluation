@@ -17,6 +17,9 @@
 		840CE85B18234B1900D0B1E3 /* whiteArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 840CE85318234B1900D0B1E3 /* whiteArrow.png */; };
 		840CE85C18234B1900D0B1E3 /* whiteArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 840CE85418234B1900D0B1E3 /* whiteArrow@2x.png */; };
 		840CE85F18234BD900D0B1E3 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 840CE85E18234BD900D0B1E3 /* EGORefreshTableHeaderView.m */; };
+		843A09FF18307ED600F5D470 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 843A09FE18307ED600F5D470 /* DetailViewController.m */; };
+		843A0A0218307FB100F5D470 /* DetailInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 843A0A0118307FB100F5D470 /* DetailInfoCell.m */; };
+		84626234182FBAD800DE2B6B /* IpSetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84626233182FBAD800DE2B6B /* IpSetViewController.m */; };
 		8479F4811822964000404B28 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8479F4801822964000404B28 /* SettingViewController.m */; };
 		8479F48718229A8000404B28 /* LogOutNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 8479F48518229A8000404B28 /* LogOutNormal.png */; };
 		8479F48818229A8000404B28 /* LogOutPress.png in Resources */ = {isa = PBXBuildFile; fileRef = 8479F48618229A8000404B28 /* LogOutPress.png */; };
@@ -104,6 +107,12 @@
 		840CE85418234B1900D0B1E3 /* whiteArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "whiteArrow@2x.png"; sourceTree = "<group>"; };
 		840CE85D18234BD900D0B1E3 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
 		840CE85E18234BD900D0B1E3 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
+		843A09FD18307ED600F5D470 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		843A09FE18307ED600F5D470 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		843A0A0018307FB100F5D470 /* DetailInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailInfoCell.h; sourceTree = "<group>"; };
+		843A0A0118307FB100F5D470 /* DetailInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailInfoCell.m; sourceTree = "<group>"; };
+		84626232182FBAD800DE2B6B /* IpSetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IpSetViewController.h; sourceTree = "<group>"; };
+		84626233182FBAD800DE2B6B /* IpSetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IpSetViewController.m; sourceTree = "<group>"; };
 		8479F47F1822964000404B28 /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		8479F4801822964000404B28 /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		8479F48518229A8000404B28 /* LogOutNormal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LogOutNormal.png; sourceTree = "<group>"; };
@@ -278,6 +287,8 @@
 				849C16C21821324600B7F9C5 /* GHMenuCell.m */,
 				849C16C81821330E00B7F9C5 /* LeftViewController.h */,
 				849C16C91821330E00B7F9C5 /* LeftViewController.m */,
+				84626232182FBAD800DE2B6B /* IpSetViewController.h */,
+				84626233182FBAD800DE2B6B /* IpSetViewController.m */,
 				849C16CA1821330F00B7F9C5 /* LeftViewController.xib */,
 			);
 			name = LeftView;
@@ -307,6 +318,10 @@
 			children = (
 				84BE6ECE181FE1EF00216ADA /* CourseViewController.h */,
 				84BE6ECF181FE1EF00216ADA /* CourseViewController.m */,
+				843A09FD18307ED600F5D470 /* DetailViewController.h */,
+				843A09FE18307ED600F5D470 /* DetailViewController.m */,
+				843A0A0018307FB100F5D470 /* DetailInfoCell.h */,
+				843A0A0118307FB100F5D470 /* DetailInfoCell.m */,
 				84B95BA91827854400B32571 /* Course.h */,
 				84B95BAA1827854400B32571 /* Course.m */,
 			);
@@ -691,6 +706,9 @@
 				840CE84A182343D900D0B1E3 /* LoadMoreFooterView.m in Sources */,
 				840CE85F18234BD900D0B1E3 /* EGORefreshTableHeaderView.m in Sources */,
 				84B95BAB1827854400B32571 /* Course.m in Sources */,
+				84626234182FBAD800DE2B6B /* IpSetViewController.m in Sources */,
+				843A09FF18307ED600F5D470 /* DetailViewController.m in Sources */,
+				843A0A0218307FB100F5D470 /* DetailInfoCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

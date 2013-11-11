@@ -10,6 +10,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import <Accelerate/Accelerate.h>
 
+/// sample 
+
 CGFloat const kRNGridMenuDefaultDuration = 0.25f;
 CGFloat const kRNGridMenuDefaultBlur = 0.3f;
 CGFloat const kRNGridMenuDefaultWidth = 280;

@@ -19,15 +19,11 @@
 
 @property(strong, nonatomic) UITableView *courseTableView;
 @property(strong, nonatomic) NSMutableArray *dataArr;
+@property(strong, nonatomic) NSString *ipStr;
 
 @property (strong, nonatomic) MBProgressHUD *HUD;
 @property (retain, nonatomic) EGORefreshTableHeaderView *refreshHeaderView;
 @property (nonatomic) BOOL reloading;
-
-//开始重新加载时调用的方法
-- (void)reloadTableViewDataSource;
-//完成加载时调用的方法
-- (void)doneLoadingTableViewData;
 
 //私有变量
 -(void) GetErr:(ASIHTTPRequest *)request;

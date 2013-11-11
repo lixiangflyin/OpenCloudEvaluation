@@ -12,6 +12,7 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
 
-#define COMMON_API @"http://localhost:8080"
+//#define COMMON_API @"http://localhost:8080"
+#define COMMON_API @"http://223.3.98.209:8080"
 
 #endif

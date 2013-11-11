@@ -20,4 +20,5 @@
 
 - (id)initWithCourseDictionary:(NSDictionary *)dictionary;
 +(NSString *)getAddress:(Course *)course;
+
 @end

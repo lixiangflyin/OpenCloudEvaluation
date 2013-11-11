@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "PPRevealSideViewController.h"
+#import "IpSetViewController.h"
 
 @interface LeftViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
 

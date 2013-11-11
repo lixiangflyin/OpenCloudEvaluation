@@ -37,6 +37,20 @@
     UIColor *bgColor = [UIColor colorWithRed:(50.0f/255.0f) green:(57.0f/255.0f) blue:(74.0f/255.0f) alpha:1.0f];
     self.view.backgroundColor = bgColor;
     
+    UILabel *idLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 6, 250, 32)];
+    idLabel.textColor = [UIColor whiteColor];
+    idLabel.textAlignment = NSTextAlignmentLeft;
+    idLabel.backgroundColor = [UIColor clearColor];
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    NSString *title = [defaults valueForKey:@"title"];
+    if([title isEqualToString:@"teacher"])
+        idLabel.text = @"当前身份：教师";
+    else if([title isEqualToString:@"master"])
+        idLabel.text = @"当前身份：督导";
+    else
+        idLabel.text = @"当前身份：学生";
+    [self.view addSubview:idLabel];
+    
     //创建tableview
     leftTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 44, 320, 460-44) style: UITableViewStylePlain];
     leftTableView.scrollEnabled = YES;
@@ -50,7 +64,7 @@
     
     //获取数据
     listItem = [[NSArray alloc]initWithObjects:@"我的评教",@"个人信息", nil];
-    setInfo = [[NSArray alloc]initWithObjects:@"设置", nil];
+    setInfo = [[NSArray alloc]initWithObjects:@"设置",@"设定IP", nil];
     [self setExtraCellLineHidden:self.leftTableView];
 }
 
@@ -158,12 +172,10 @@
     if ([indexPath section] == 0)
     {
         cell.textLabel.text = [self.listItem objectAtIndex:row];
-        cell.imageView.image = [UIImage imageNamed:@"head.png"];
     }
     if ([indexPath section] == 1)
     {
         cell.textLabel.text = [self.setInfo objectAtIndex:row];
-        cell.imageView.image = [UIImage imageNamed:@"head.png"];
     }
     
     cell.accessoryType = UITableViewCellAccessoryNone;
@@ -200,6 +212,11 @@
             SettingViewController *setting = [[SettingViewController alloc]init];
             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:setting];
             //setting.mDelegate = self;
+            [self presentViewController:nav animated:YES completion:nil];
+        }
+        if (row == 1) {
+            IpSetViewController *ipset = [[IpSetViewController alloc]init];
+            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:ipset];
             [self presentViewController:nav animated:YES completion:nil];
         }
     }

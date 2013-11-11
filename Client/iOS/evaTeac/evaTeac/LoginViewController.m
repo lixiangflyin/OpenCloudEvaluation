@@ -31,6 +31,9 @@
     if (self) {
         // Custom initialization
         self.title = @"登录";
+        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+        NSString *ipAddress = [defaults objectForKey:@"ipAddress"];
+        _ipStr = ipAddress;
     }
     return self;
 }
@@ -49,7 +52,7 @@
     
     nameFld.delegate = self;
     psdFld.delegate = self;
-    psdFld.secureTextEntry = YES;
+    //psdFld.secureTextEntry = YES;
     
 }
 
@@ -98,7 +101,7 @@
 	HUD.labelText = @"登录中...";
 	[HUD show:YES];
 
-    NSMutableString *urlstr = [COMMON_API mutableCopy];
+    NSMutableString *urlstr = [_ipStr mutableCopy];
     [urlstr appendFormat:@"/login/%@", nameFld.text];
     //[urlstr appendFormat:@"&pass=%@",psdFld.text];
     
@@ -114,6 +117,61 @@
 
 - (IBAction)tapBack:(id)sender {
     [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
+}
+
+//搞成单例模式
++ (BOOL)isValidatIP:(NSString *)ipAddress{
+    
+    NSString  *urlRegEx =@"^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
+    "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
+    "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
+    "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
+    
+    NSError *error;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:urlRegEx options:0 error:&error];
+    
+    if (regex != nil) {
+        NSTextCheckingResult *firstMatch=[regex firstMatchInString:ipAddress options:0 range:NSMakeRange(0, [ipAddress length])];
+        
+        if (firstMatch) {
+            NSRange resultRange = [firstMatch rangeAtIndex:0];
+            NSString *result=[ipAddress substringWithRange:resultRange];
+            //输出结果
+            NSLog(@"%@",result);
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
+- (IBAction)setIP:(id)sender {
+    if(psdFld.text == nil)
+        return;
+    //判断是否已登陆
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *ip = [NSString stringWithFormat:@"http://%@:8080",psdFld.text];
+    [defaults setObject:ip forKey:@"ipAddress"];
+    _ipStr = ip;
+    
+    if([LoginViewController isValidatIP:psdFld.text]){
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.mode = MBProgressHUDModeText;
+        hud.labelText = @"设置成功";
+        hud.margin = 30.f;
+        hud.yOffset = 0.f;
+        hud.removeFromSuperViewOnHide = YES;
+        [hud hide:YES afterDelay:0.8];
+    }
+    else{
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.mode = MBProgressHUDModeText;
+        hud.labelText = @"IP格式错误";
+        hud.margin = 30.f;
+        hud.yOffset = 0.f;
+        hud.removeFromSuperViewOnHide = YES;
+        [hud hide:YES afterDelay:0.8];
+    }
 }
 
 //获取请求结果
@@ -157,7 +215,7 @@
         //表示可以手势滑动
         [self.revealSideViewController setDirectionsToShowBounce:PPRevealSideDirectionNone];
         
-        revealSideViewController.modalTransitionStyle = UIModalPresentationPageSheet;
+        //revealSideViewController.modalTransitionStyle = UIModalPresentationPageSheet;
         [self presentViewController:revealSideViewController animated:YES completion:nil];
         
 		return;
@@ -195,7 +253,7 @@
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     
     [defaults setValue:@"lixiang" forKey:@"UserName"];
-    [defaults setValue:@"122378" forKey:@"UserID"];
+    [defaults setValue:@"121" forKey:@"UserID"];
     [defaults setBool:YES forKey:@"isLogined"];
     
     BOOL test = [defaults boolForKey:@"isLogined"];

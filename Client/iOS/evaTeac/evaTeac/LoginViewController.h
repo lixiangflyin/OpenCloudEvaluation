@@ -24,8 +24,10 @@
 @property (strong, nonatomic) IBOutlet UITextField *nameFld;
 @property (strong, nonatomic) IBOutlet UITextField *psdFld;
 @property (strong, nonatomic) IBOutlet UIToolbar *loginBar;
+@property(strong, nonatomic) NSString *ipStr;
 - (IBAction)login:(id)sender;
 - (IBAction)tapBack:(id)sender;
+- (IBAction)setIP:(id)sender;
 
 @property (retain, nonatomic) MBProgressHUD *HUD;
 

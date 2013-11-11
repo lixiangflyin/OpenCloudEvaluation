@@ -110,7 +110,7 @@
                     BOOL isLogined = [defaults boolForKey:@"isLogined"];
                     
                     if (isLogined == YES)
-                        cell.detailTextLabel.text = [defaults objectForKey:@"UserName"];
+                        cell.detailTextLabel.text = [defaults objectForKey:@"id"];
                     else
                         cell.detailTextLabel.text = @"未登录";
                     break;
@@ -201,8 +201,8 @@
     if(buttonIndex == 0)
     {
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setValue:@"" forKey:@"UserName"];
-        [defaults setValue:@"" forKey:@"UserID"];
+        [defaults setValue:@"" forKey:@"id"];
+        [defaults setValue:@"" forKey:@"pwd"];
         [defaults setBool:NO forKey:@"isLogined"];
         
         LoginViewController *login = [[LoginViewController alloc]initWithNibName:@"LoginViewController" bundle:nil];

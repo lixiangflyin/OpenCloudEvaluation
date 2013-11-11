@@ -12,6 +12,7 @@
 #import "RNGridMenu.h"
 #import "Course.h"
 #import "LeftViewController.h"
+#import "DetailViewController.h"
 
 typedef enum RequestStage
 {
@@ -35,9 +36,18 @@ typedef enum RequestStage
     if (self) {
         // Custom initialization
         self.title = @"评教";
+        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+        NSString *ipAddress = [defaults objectForKey:@"ipAddress"];
+        _ipStr = ipAddress;
     }
     return self;
 }
+
+//#pragma mark IpSetViewController Delegate
+//-(void)SetIp:(NSString *)string
+//{
+//    _ipStr = string;
+//}
 
 - (void)viewDidLoad
 {
@@ -60,6 +70,14 @@ typedef enum RequestStage
 	[_HUD showWhileExecuting:@selector(firstTimeLoad) onTarget:self withObject:nil animated:YES];
 }
 
+//tableView隐藏多余的分割线
+-(void)setExtraCellLineHidden: (UITableView *)tableView
+{
+    UIView *view = [UIView new];
+    view.backgroundColor = [UIColor clearColor];
+    [tableView setTableFooterView:view];
+}
+
 -(void)firstTimeLoad
 {
     //创建tableview
@@ -68,6 +86,7 @@ typedef enum RequestStage
     _courseTableView.dataSource = self;
     //视图添加
     [self.view addSubview:_courseTableView];
+    [self setExtraCellLineHidden: _courseTableView];
     
     //实现下拉刷新
     if (_refreshHeaderView == nil) {
@@ -88,7 +107,7 @@ typedef enum RequestStage
 -(void)loadData
 {
     _signStage = ReloadingStage;  //请求标志
-    NSMutableString *urlstr = [COMMON_API mutableCopy];
+    NSMutableString *urlstr = [_ipStr mutableCopy];
     [urlstr appendFormat:@"%@", @"/schedule/thisweek"];
     
 	NSURL *myurl = [NSURL URLWithString:urlstr];
@@ -125,6 +144,11 @@ typedef enum RequestStage
                 Course *course = [[Course alloc]initWithCourseDictionary:[arr objectAtIndex:i]];
                 [_dataArr addObject:course];
                 course = nil;
+            }
+            
+            if(_reloading == YES){
+                _reloading = NO;
+                [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.courseTableView];
             }
             
             [_courseTableView reloadData];
@@ -196,24 +220,6 @@ typedef enum RequestStage
 
 #pragma mark -
 #pragma mark UIScrollViewDelegate Methods
-//重新加载时调用
--(void)reloadTableViewDataSource
-{
-    //NSLog(@"sdfasg");
-    //[self.courseTableView reloadData];
-    //reloading = YES;
-    [self loadData];
-}
-
-//完成加载时调用
--(void)doneLoadingTableViewData
-{
-    _reloading = NO;
-    [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.courseTableView];
-}
-
-#pragma mark -
-#pragma mark UIScrollViewDelegate Methods
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -229,8 +235,8 @@ typedef enum RequestStage
 #pragma mark EGORefreshTableHeaderDelegate Methods
 -(void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view
 {
-    [self reloadTableViewDataSource];
-    [self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:2.0];
+    [self loadData];
+    _reloading = YES;
 }
 
 -(BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view
@@ -279,8 +285,6 @@ typedef enum RequestStage
         aView.backgroundColor = [UIColor greenColor];
         cell.selectedBackgroundView = aView;
         [cell setBackgroundColor:[UIColor whiteColor]];
-        
-        cell.selectionStyle = UITableViewCellAccessoryNone;
     }
     else{
         for(UIView *subView in cell.contentView.subviews)
@@ -290,22 +294,19 @@ typedef enum RequestStage
     }
     
     [cell setDelegate:self];
-    [cell setFirstStateIconName:@"check.png"
-                     firstColor:[UIColor colorWithRed:85.0 / 255.0 green:213.0 / 255.0 blue:80.0 / 255.0 alpha:1.0]
-            secondStateIconName:@"cross.png"
-                    secondColor:[UIColor colorWithRed:232.0 / 255.0 green:61.0 / 255.0 blue:14.0 / 255.0 alpha:1.0]
+    [cell setFirstStateIconName:nil
+                     firstColor:nil
+            secondStateIconName:nil
+                    secondColor:nil
                   thirdIconName:@"clock.png"
                      thirdColor:[UIColor colorWithRed:254.0 / 255.0 green:217.0 / 255.0 blue:56.0 / 255.0 alpha:1.0]
-                 fourthIconName:@"list.png"
-                    fourthColor:[UIColor colorWithRed:206.0 / 255.0 green:149.0 / 255.0 blue:98.0 / 255.0 alpha:1.0]];
+                 fourthIconName:nil
+                    fourthColor:nil];
     
     [cell.contentView setBackgroundColor:[UIColor whiteColor]];
     
     // Setting the default inactive state color to the tableView background color
-    [cell setDefaultColor:_courseTableView.backgroundView.backgroundColor];
-    
-    //
-    //[cell setSelectionStyle:UITableViewCellSelectionStyleGray];
+    //[cell setDefaultColor:_courseTableView.backgroundView.backgroundColor];
     
     Course *current = [_dataArr objectAtIndex:indexPath.row];
     [self modCell:cell withName:current.title course:current.teacher_name address:[Course getAddress:current]];
@@ -375,8 +376,12 @@ typedef enum RequestStage
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    //CourseViewController *tableViewController = [[CourseViewController alloc] init];
-    //[self.navigationController pushViewController:tableViewController animated:YES];
+    //保证背景颜色一闪而过
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    
+    DetailViewController *detail = [[DetailViewController alloc] init];
+    detail.course = [_dataArr objectAtIndex:indexPath.row];
+    [self.navigationController pushViewController:detail animated:YES];
 }
 
 #pragma mark - MCSwipeTableViewCellDelegate
@@ -411,7 +416,8 @@ typedef enum RequestStage
     }
     else if(state == 3){
         NSLog(@"right 1");
-        [self showGrid];
+        //[self showGrid];
+        [self showList];
     }
     else if(state == 4){
         NSLog(@"right 2");
@@ -433,7 +439,7 @@ typedef enum RequestStage
     Course *current = [_dataArr objectAtIndex:_cellNumber];
     
     _signStage = AssessingStage;
-    NSMutableString *urlstr = [COMMON_API mutableCopy];
+    NSMutableString *urlstr = [_ipStr mutableCopy];
     [urlstr appendFormat:@"/evaluate/%@/%@/%@", current.course_id,item.title,@"good"];
     
 	NSURL *myurl = [NSURL URLWithString:urlstr];
@@ -465,23 +471,22 @@ typedef enum RequestStage
 }
 
 - (void)showList {
-    NSInteger numberOfOptions = 5;
+    NSInteger numberOfOptions = 8;
     NSArray *options = @[
-                         @"0",
-                         @"20",
-                         @"40",
-                         @"50",
-                         @"60",
-                         @"70",
-                         @"80",
-                         @"90",
-                         @"100"
+                         @"2",
+                         @"4",
+                         @"5",
+                         @"6",
+                         @"7",
+                         @"8",
+                         @"9",
+                         @"10"
                          ];
     RNGridMenu *av = [[RNGridMenu alloc] initWithTitles:[options subarrayWithRange:NSMakeRange(0, numberOfOptions)]];
     av.delegate = self;
     //    av.itemTextAlignment = NSTextAlignmentLeft;
     av.itemFont = [UIFont boldSystemFontOfSize:18];
-    av.itemSize = CGSizeMake(150, 55);
+    av.itemSize = CGSizeMake(200, 45);
     [av showInViewController:self center:CGPointMake(self.view.bounds.size.width/2.f, self.view.bounds.size.height/2.f)];
 }
 
@@ -525,9 +530,9 @@ typedef enum RequestStage
     [av showInViewController:self center:CGPointMake(self.view.bounds.size.width/2.f, self.view.bounds.size.height/2.f)];
 }
 
-#pragma mark -
-- (void)reload:(id)sender {
-    [_courseTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-}
+//#pragma mark -
+//- (void)reload:(id)sender {
+//    [_courseTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+//}
 
 @end

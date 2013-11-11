@@ -19,8 +19,10 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     
+    //设定ip
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:COMMON_API forKey:@"ipAddress"];
     //判断是否已登陆
-    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     BOOL isLogined = [defaults boolForKey:@"isLogined"];
     if (isLogined == YES){
         CourseViewController *course = [[CourseViewController alloc]init];
